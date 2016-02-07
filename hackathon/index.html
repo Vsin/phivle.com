@@ -1,0 +1,145 @@
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />	
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="js/jquery.masonry.min.js"></script>
+	<script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+	<script src="js/jquery.infinitescroll.min.js"></script>
+	<script src="js/jquery.hoverIntent.minified.js"></script> 
+
+  </head>
+	<body>
+	<div id="container" >
+		<div id="1" class="item "> <img src="pictures/django.png"  /> </div>
+		<div id="2" class="item width2"> <img src="pictures/ars2.png" /> </div>
+		<div id="3"  class="item width3"> <img src="pictures/django.png"  /> </div>
+		<div id="4" class="item "> <img src="pictures/railsHD.png"/> </div>
+		<div id="5" class="item"> <img src="pictures/hampi.jpg"  /> </div>
+		<div id="6" class="item width2"> <img src="pictures/hampi.jpg"  /> </div>
+		<div id="7" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="8" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="9" class="item width3"> <img src="pictures/halo720.png"  /> </div>
+		<div id="10" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="11"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+		<div id="12" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="13" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="14" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="15"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+		<div id="16" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="17" class="item"> <img src="pictures/inception.jpg" /> </div>	
+		<!--<div id="content">
+			<div id="2" class="item width2"> <img src="pictures/ars2.png" /> </div>
+			<div id="3"  class="item width3"> <img src="pictures/django.png"  /> </div>
+			<div id="4" class="item "> <img src="pictures/railsHD.png"/> </div>
+			<div id="5" class="item"> <img src="pictures/hampi.jpg"  /> </div>
+			<div id="6" class="item width2"> <img src="pictures/hampi.jpg"  /> </div>
+			<div id="7" class="item"> <img src="pictures/inception.jpg" /> </div>
+			<div id="8" class="item"> <img src="pictures/ars2.png"  /> </div>
+			<div id="9" class="item width3"> <img src="pictures/halo720.png"  /> </div>
+			<div id="10" class="item"> <img src="pictures/ars2.png"  /> </div>
+			<div id="11"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+			<div id="12" class="item"> <img src="pictures/inception.jpg" /> </div>
+			<div id="13" class="item"> <img src="pictures/inception.jpg" /> </div>
+			<div id="14" class="item"> <img src="pictures/ars2.png"  /> </div>
+			<div id="15"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+			<div id="16" class="item"> <img src="pictures/inception.jpg" /> </div>
+			<div id="17" class="item"> <img src="pictures/inception.jpg" /> </div>
+		</div>-->
+	</div>
+	<nav id="page-nav">
+ 	 <a href="page2.html"></a>
+	</nav>
+	</body>
+</html>
+
+
+<script>
+
+var $container = $('#container');
+$container.imagesLoaded(function(){
+  $container.masonry({
+    itemSelector : '.item',
+  });
+});
+
+$(function(){
+  $('#container').masonry({
+    // options
+    itemSelector : '.item',
+    isAnimated: true,
+      animationOptions: {
+    duration:00,
+    easing: 'linear',
+    queue: true
+  }
+
+  });
+});
+
+
+	var clickedBox;
+	$(".item").hoverIntent(
+		function(){			
+			//Set css of clicked box			
+			clickedBox = $(this).attr('id');
+			$(this).transition({scale: 1.5});
+			//$(this).toggleClass('clicked');
+			$(this).find('img').css('opacity','1.0');
+			$(this).css('z-index','5');
+
+			//Darken everything else
+			$('div.item').each(function() {
+				if($(this).attr('id') != clickedBox){
+					$(this).find('img').css('opacity','0.5');
+				}
+			});
+					
+			$(this).find("#caption").css('display','block');			
+		},
+		function(){
+			//Shrink old clicked box
+			$(this).transition({scale: 1.0});
+			$(this).css('z-index','1');
+			$(this).find("#caption").css('display','none');
+
+			//Ligthen everything
+			$('div.item').each(function() {
+				$(this).find('img').css('opacity','1.0');
+			});
+	});	
+	
+/*var $container = $('#container');
+$container.infinitescroll({
+    // infinite scroll options...
+    loadingImg : "pictures/halo720.png"
+  },
+  // trigger Masonry as a callback
+  function( newElements ) {
+    var $newElems = $( newElements );
+    $container.masonry( 'appended', $newElems );
+  }
+);*/
+
+    $container.infinitescroll({
+      navSelector  : '#page-nav',    // selector for the paged navigation 
+      nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+      itemSelector : '.item',     // selector for all items you'll retrieve
+      loading: {
+          finishedMsg: 'No more pages to load.',
+          img: 'http://i.imgur.com/6RMhx.gif'
+        }
+      },
+      // trigger Masonry as a callback
+      function( newElements ) {
+        // hide new items while they are loading
+        var $newElems = $( newElements ).css({ opacity: 0 });
+        // ensure that images load before adding to masonry layout
+        $newElems.imagesLoaded(function(){
+          // show elems now they're ready
+          $newElems.animate({ opacity: 1 });
+          $container.masonry( 'appended', $newElems, true ); 
+        });
+      }
+    );
+
+</script>

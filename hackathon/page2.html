@@ -1,0 +1,88 @@
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+		
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="js/jquery.masonry.min.js"></script>
+	<script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+	<script src="js/jquery.infinitescroll.min.js"></script>
+  </head>
+	<body>
+	<div id="container" >
+		<div id="21" class="item "> <img src="pictures/railsHD.png"  /> </div>
+		<div id="22" class="item width2"> <img src="pictures/railsHD.png" /> </div>
+		<div id="23"  class="item width3"> <img src="pictures/railsHD.png"  /> </div>
+		<div id="24" class="item "> <img src="pictures/railsHD.png"/> </div>
+		<div id="25" class="item"> <img src="pictures/railsHD.png"  /> </div>
+		<div id="26" class="item width2"> <img src="pictures/railsHD.png"  /> </div>
+		<div id="27" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="28" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="29" class="item width3"> <img src="pictures/halo720.png"  /> </div>
+		<div id="20" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="21"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+		<div id="22" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="23" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="24" class="item"> <img src="pictures/ars2.png"  /> </div>
+		<div id="25"  class="item width2"> <img src="pictures/tennis2.jpg"  /> </div>
+		<div id="26" class="item"> <img src="pictures/inception.jpg" /> </div>
+		<div id="27" class="item"> <img src="pictures/inception.jpg" /> </div>	
+
+	</div>
+	</body>
+</html>
+
+
+<script>
+
+var $container = $('#container');
+$container.imagesLoaded(function(){
+  $container.masonry({
+    itemSelector : '.item',
+  });
+});
+
+$(function(){
+  $('#container').masonry({
+    // options
+    itemSelector : '.item',
+    isAnimated: true,
+      animationOptions: {
+    duration:00,
+    easing: 'linear',
+    queue: true
+  }
+
+  });
+});
+
+
+var previous;
+	$(".item").hover(
+		function(){			
+			//Set css of clicked box
+			clickedBox = $(this).attr('id');
+			$(this).transition({scale: 1.5});
+			$(this).find('img').css('opacity','1.0');
+			$(this).css('z-index','5');
+
+			//Darken everything else
+			$('div.item').each(function() {
+				if($(this).attr('id') != clickedBox){
+					$(this).find('img').css('opacity','0.5');
+				}
+			});
+					
+			$(this).find("#caption").css('display','block');
+		},
+		function(){
+			//Shrink old clicked box
+			$(this).transition({scale: 1.0});
+			$(this).css('z-index','1');
+			$(this).find("#caption").css('display','none');
+
+			//Ligthen everything
+			$('div.item').each(function() {
+				$(this).find('img').css('opacity','1.0');
+			});
+	});
+</script>
